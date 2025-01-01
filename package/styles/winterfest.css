@@ -1,0 +1,170 @@
+.winterfest-content {
+    display: grid;
+    grid-template-columns: repeat(7, 0.5fr);
+    padding: 60px;
+    padding-top: 60px;
+    background-color: #181818;
+    justify-content: center;
+    align-items: center;
+    overflow-y: auto;
+    width: 100%;
+    gap: 5px 10px;
+    grid-auto-rows: auto;
+}
+
+.winterfest-item {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 10px;
+    cursor: pointer;
+    pointer-events: auto !important;
+    visibility: visible !important;
+    transition: background-color 0.3s, transform 0.1s;
+    width: 100px;
+    height: auto;
+    padding: 0;
+}
+
+.winterfest-item button {
+    all: unset;
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+    width: 100%;
+}
+
+.winterfest-item img {
+    height: 100%;
+    width: 100%;
+    object-fit: cover;
+}
+
+.winterfest-item span {
+    font-size: 14px;
+}
+
+.winterfest-item:hover {
+    background-color: rgba(128, 128, 128, 0.5);
+    transform: scale(1.02);
+}
+
+.winterfest-item .status-text {
+    opacity: 0;
+    font-size: 12px;
+    color: #aaa;
+    margin-top: 5px;
+    display: flex;
+    align-items: center;
+}
+
+.modal-winterfest {
+    display: none;
+    position: fixed;
+    z-index: 1;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    justify-content: center;
+    align-items: center;
+}
+
+.modal-winterfest-content {
+    background-color: #181818;
+    padding: 20px;
+    border-radius: 10px;
+    width: 300px;
+    text-align: center;
+}
+
+.modal-winterfest-button-container {
+    margin-top: 20px;
+}
+
+.modal-winterfest button {
+    padding: 10px 20px;
+    margin: 5px;
+    border: none;
+    cursor: pointer;
+}
+
+.cancel-winterfest-button {
+    background-color: #f44336;
+    color: white;
+    border-radius: 10px;
+}
+
+.open-winterfest-button {
+    background-color: #4CAF50;
+    color: white;
+    border-radius: 10px;
+}
+
+.loading-overlay {
+    display: none;
+    position: fixed;
+    z-index: 2;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: #38B2FB;
+    opacity: 0;
+    justify-content: center;
+    align-items: center;
+    transition: opacity 0.5s ease-in;
+}
+
+.loading-overlay .present-image {
+    width: 200px;
+    height: 200px;
+    object-fit: cover;
+    transform: scale(0);
+    animation: popIn 1s ease-out forwards, rotatePresent 3s linear infinite 1s;
+}
+
+.loading-overlay .loading-text {
+    color: white;
+    font-size: 20px;
+    margin-top: 10px;
+    opacity: 0;
+    animation: fadeInText 1s ease-out forwards 1.5s;
+}
+
+.ok-winterfest-button {
+    background-color: #4CAF50;
+    color: white;
+    border-radius: 10px;
+}
+
+@keyframes popIn {
+    0% {
+        transform: scale(0);
+    }
+    50% {
+        transform: scale(1.2);
+    }
+    100% {
+        transform: scale(1);
+    }
+}
+
+@keyframes rotatePresent {
+    0% {
+        transform: rotate(0deg);
+    }
+    100% {
+        transform: rotate(360deg);
+    }
+}
+
+@keyframes fadeInText {
+    0% {
+        opacity: 0;
+    }
+    100% {
+        opacity: 1;
+    }
+}

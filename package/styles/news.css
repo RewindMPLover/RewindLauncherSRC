@@ -1,0 +1,59 @@
+/* Blurred frame for the news section */
+.news-info {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%; /* Full width */
+    height: 30%; /* 30% of parent height */
+    background: rgba(0, 0, 0, 0.5); /* 50% transparent black */
+    backdrop-filter: blur(10px); /* Blurring effect */
+    display: flex;
+    flex-direction: column;
+    justify-content: center; /* Center title and description vertically */
+    align-items: flex-start; /* Align text to the left */
+    padding: 20px; /* Adjust padding for spacing */
+    box-sizing: border-box;
+    z-index: 1;
+}
+
+/* Title and description inside the blurred frame */
+.news-title {
+    color: white;
+    font-size: 1rem;
+    font-weight: bold;
+    margin: 0;
+    z-index: 2;
+    text-align: left;
+}
+
+.news-description {
+    color: white;
+    font-size: 0.8rem;
+    margin: 5px 0 0;
+    z-index: 2;
+    text-align: left;
+}
+
+/* Styling the circular mute button */
+.mute-button {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    width: 40px;
+    height: 40px;
+    background: rgba(0, 0, 0, 0.5); /* 50% transparent black */
+    backdrop-filter: blur(8px); /* Blurring effect */
+    border-radius: 50%;
+    border: none;
+    cursor: pointer;
+    color: white;
+    font-size: 18px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 3;
+}
+
+.mute-button:hover {
+    background: rgba(0, 0, 0, 0.7); /* Slightly darker on hover */
+}

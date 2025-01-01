@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="../styles/index.css">
+    <title>Trailer</title>
+    <style>
+        body {
+            margin: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            width: 100vw;
+            height: 100vh;
+            background-color: #000;
+            overflow: hidden;
+        }
+        video {
+            position: absolute;
+            width: 100vw;
+            height: 100vh;
+            object-fit: cover;
+        }
+        button {
+            position: absolute;
+            bottom: 20px;
+            left: 20px;
+            padding: 12px 80px;
+            font-size: 18px;
+            background: linear-gradient(135deg, #0765bd, #160986);
+            color: white;
+            font-weight: bold;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            z-index: 10;
+            opacity: 0;
+            transition: opacity 1s ease-in-out;
+        }
+        button:hover {
+            background: linear-gradient(135deg, #0b5ca7, #1c1083);
+        }
+    </style>
+</head>
+<body>
+    <div class="title-bar">
+        <div class="drag-region">
+            <span id="app-title" class="app-title">app-title</span>
+        </div>
+        <div class="title-bar-buttons">
+            <button id="minimize">—</button>
+            <button class="close" id="close">X</button>
+        </div>
+    </div>      
+
+    <video id="trailer" autoplay>
+        <source src="../assets/Video.mp4" type="video/mp4">
+        Your browser does not support the video tag.
+    </video>
+    <button id="skip">Skip</button>
+    <script>
+        const { ipcRenderer } = require('electron');
+
+        const video = document.getElementById('trailer');
+        const skipButton = document.getElementById('skip');
+
+        video.volume = 0.3;
+
+        video.addEventListener('ended', () => {
+            ipcRenderer.send('Home');
+        });
+
+        skipButton.addEventListener('click', () => {
+            ipcRenderer.send('Home');
+        });
+
+        const globals = require("../globals/globals.js")
+        document.getElementById('app-title').innerText = "Rewind Launcher (" + globals.CurrentVer + ")"
+
+        document.getElementById('minimize').addEventListener('click', () => {
+            ipcRenderer.send('minimize');
+        });
+
+        document.getElementById('close').addEventListener('click', () => {
+            ipcRenderer.send('close');
+        });
+
+        setTimeout(() => {
+            skipButton.style.opacity = 1;
+        }, 5000);
+    </script>
+</body>
+</html>

@@ -1,0 +1,280 @@
+/* Base Reset */
+body, h1, p, input, button {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+body {
+  font-family: 'Poppins', sans-serif;
+  background-color: #0d121d;
+  color: white;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  user-select: none; /* Prevent text selection */
+}
+
+/* Container */
+.container {
+  width: 100%;
+  max-width: 400px;
+  padding: 20px;
+  text-align: center;
+}
+
+/* Header */
+.header {
+  margin-bottom: 30px;
+}
+.logo {
+  width: 150px;
+}
+
+/* Login Form */
+.login-container h1 {
+  font-size: 24px;
+  margin-bottom: 20px;
+}
+
+.login-form {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  margin-bottom: 20px;
+}
+
+.login-form input {
+  background-color: #1e1e1e;
+  border: 1px solid #333;
+  color: white;
+  padding: 10px;
+  font-size: 14px;
+  border-radius: 4px;
+}
+
+.login-form button {
+  background-color: #6366f1;
+  color: white;
+  border: none;
+  padding: 10px;
+  font-size: 16px;
+  font-weight: bold;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.login-form button:hover {
+  background-color: #818cf8;
+}
+
+/* Divider */
+.divider {
+  position: relative;
+  margin: 20px 0;
+  color: #aaa;
+  font-size: 14px;
+}
+
+.divider span {
+  background-color: #121212;
+  padding: 0 10px;
+}
+
+.divider::before, .divider::after {
+  content: '';
+  display: block;
+  height: 1px;
+  background-color: #333;
+  position: absolute;
+  top: 50%;
+  width: 40%;
+}
+
+.divider::before {
+  left: 0;
+}
+
+.divider::after {
+  right: 0;
+}
+
+/* Social Buttons */
+.social-buttons {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.social-btn {
+  background-color: #333;
+  color: white;
+  border: none;
+  padding: 10px;
+  font-size: 14px;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.social-btn:hover {
+  background-color: #444;
+}
+
+.facebook {
+  background-color: #1877f2;
+}
+
+.facebook:hover {
+  background-color: #145dbb;
+}
+
+.google {
+  background-color: #db4437;
+}
+
+.google:hover {
+  background-color: #b33629;
+}
+
+.xbox {
+  background-color: #107c10;
+}
+
+.xbox:hover {
+  background-color: #0d6610;
+}
+
+/* Footer Text */
+.footer-text {
+  font-size: 12px;
+  margin-top: 20px;
+  color: #aaa;
+}
+
+.footer-text a {
+  color: white;
+  text-decoration: underline;
+  cursor: pointer;
+}
+
+
+.title-bar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 30px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: #0d121d;
+  z-index: 1000;
+}
+
+/* Draggable Region */
+.drag-region {
+  flex-grow: 1;
+  padding-left: 10px;
+  display: flex;
+  align-items: center;
+  -webkit-app-region: drag; /* Make this region draggable */
+  color: white;
+}
+
+.app-title {
+  font-size: 14px;
+  font-weight: bold;
+}
+
+.title-bar-buttons {
+  display: flex;
+  gap: 10px;
+  margin-right: 10px;
+  -webkit-app-region: no-drag;
+}
+.title-bar-buttons button {
+  background: none;
+  border: none;
+  color: white;
+  width: 30px;
+  height: 30px;
+  text-align: center;
+  cursor: pointer;
+}
+.title-bar-buttons button:hover {
+  background-color: #333;
+}
+
+.close button:hover {
+  background-color: #b33629;
+}
+
+/* Overlay Style */
+.overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000; /* Make sure it appears above all other content */
+}
+
+.overlay-content {
+  color: white;
+  text-align: center;
+}
+
+.loading-bar-wrapper {
+  margin-top: 20px; /* Space between the text and loading bar */
+  width: 80%; /* Adjust width as necessary */
+  max-width: 300px; /* You can set a max-width to control the size */
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.loading-bar {
+  width: 100%;
+  height: 10px;
+  background-color: rgba(255, 255, 255, 0.2);
+  border-radius: 5px;
+  position: relative;
+}
+
+.loading-bar::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 50%; /* Simulating the progress (adjust this percentage dynamically later) */
+  height: 100%;
+  background-color: white;
+  border-radius: 5px;
+  animation: loadProgress 2s infinite;
+}
+
+@keyframes loadProgress {
+  0% { width: 0%; }
+  50% { width: 50%; }
+  100% { width: 100%; }
+}
+
+/* Optional: Spinner if you want a spinner and the loading bar */
+.spinner {
+  border: 4px solid rgba(255, 255, 255, 0.3);
+  border-top: 4px solid white;
+  border-radius: 50%;
+  width: 40px;
+  height: 40px;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
