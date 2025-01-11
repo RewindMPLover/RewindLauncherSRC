@@ -1,10 +1,11 @@
 {
   "name": "rewind-launcher-v2",
-  "version": "2.1.1",
+  "version": "3.0.5",
   "description": "Rewind Launcher",
   "main": "package/scripts/main.js",
   "dependencies": {
     "@electron/remote": "^2.1.2",
+    "axios": "^1.7.9",
     "express": "^4.21.1",
     "gyp": "^0.3.0",
     "http": "^0.0.1-security",
@@ -18,6 +19,7 @@
     "path": "^0.12.7",
     "ps-tree": "^1.2.0",
     "public-ip": "^7.0.1",
+    "ref-napi": "^3.0.3",
     "sudo-prompt": "^9.2.1",
     "systeminformation": "^5.23.6",
     "ws": "^8.18.0"

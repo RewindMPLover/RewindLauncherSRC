@@ -9,6 +9,16 @@
     <link rel="stylesheet" href="../styles/updateButton.css">
 </head>
 <body>
+    <div class="title-bar">
+        <div class="drag-region">
+            <span id="app-title" class="app-title">Rewind (v3.0.1)</span>
+        </div>
+        <div class="title-bar-buttons">
+            <button id="minimize" class="minimize-btn">─</button>
+            <button id="close" class="close-btn">✕</button>
+        </div>
+    </div>
+
     <div id="update-check-overlay" class="overlay">
         <div class="overlay-content">
             <p>Checking for updates...</p>
@@ -19,31 +29,20 @@
     </div>
 
     <div class="container" id="main-container" style="display: none;">
-        <header class="header">
+        <div class="content-wrapper">
             <img src="https://services.rewindmp.xyz/files/logo.png" class="logo">
-        </header>
-        <div class="title-bar">
-            <div class="drag-region"><span id="app-title" class="app-title">app-title</span></div>
-            <div class="title-bar-buttons"><button id="minimize">—</button><button class="close" id="close">X</button></div>
+            <div class="login-box">
+                <button id="authBtn" class="discord-btn">Login with Discord</button>
+                <p class="footer-text">
+                    Not in the server yet? <a href="https://discord.com/invite/rewindogfn">Join Today!</a>
+                </p>
+            </div>
         </div>
-        <main class="login-container">
-            <h1></h1>
-            <div class="login-form">
-                <button id="authBtn" class="discord-btn facebook">Authenticate with Discord</button>
-            </div>
-            <p class="divider"><span>OR</span></p>
-            <div class="social-buttons">
-                <button class="social-btn google">Terms of Service</button>
-            </div>
-            <p class="footer-text">
-                Not in the server yet? <a href="https://discord.com/invite/rewindogfn">Join Today!</a>
-            </p>
-        </main>
     </div>
 
-    <div id="update-required-container" style="display: none; align-content: center; align-self: center; align-items: center; text-align: center;">
+    <div id="update-required-container" style="display: none;">
         <p>An update is required to continue.</p>
-        <button class="update" style="align-self: center;" id="install_update">
+        <button class="update" id="install_update">
             <span class="transition"></span>
             <span class="gradient"></span>
             <span id="state" class="label">Install Update</span>

@@ -1,6 +1,6 @@
 /* 
  - Deobfuscated with <3
- - Rewind Launcher v2.1.1
+ - Rewind Launcher v3.0.5
 */
 
 const { ipcRenderer } = require("electron");
@@ -16,48 +16,94 @@ const launcherDataPath = path.join(
 );
 const globals = require("../globals/globals.js");
 let LauncherToken = "";
-let Email = "";
-let Username = "";
-let Password = "";
-document.getElementById("app-title").innerText =
-  "Rewind (" + globals.CurrentVer + ")";
-ipcRenderer.send("get-system-info");
-const showMessageBox = (_0x417a84) => {
-  ipcRenderer.send("show-message-box", _0x417a84);
-};
 let isUpdateCheckDone = false;
+document.addEventListener("DOMContentLoaded", () => {
+  try {
+    document.getElementById("app-title").innerText =
+      "Rewind (" + globals.CurrentVer + ")";
+    ipcRenderer.send("get-system-info");
+    const _0x2af8c4 = document.getElementById("update-check-overlay");
+    if (_0x2af8c4) {
+      _0x2af8c4.style.opacity = "0";
+      _0x2af8c4.style.display = "flex";
+      setTimeout(() => {
+        _0x2af8c4.style.opacity = "1";
+        checkForUpdates();
+      }, 0x64);
+    }
+    initializeLauncherData();
+  } catch (_0x36804f) {
+    console.error("Error initializing:", _0x36804f);
+  }
+});
 function checkForUpdates() {
   if (isUpdateCheckDone) {
     return;
   }
   isUpdateCheckDone = true;
-  document.getElementById("main-container").style.display = "none";
-  document.getElementById("update-required-container").style.display = "none";
-  fetch(
-    "https://services.rewindmp.xyz/api/cdn/launcherservice/v1?function=Update"
-  )
-    .then((_0x496739) => _0x496739.json())
-    .then((_0x18a3b0) => {
-      const _0x2784b6 = _0x18a3b0.CurrentBuild;
-      if (_0x2784b6 !== globals.CurrentVer) {
-        document.getElementById("update-check-overlay").style.display = "none";
-        document.getElementById("update-required-container").style.display =
-          "block";
-        updateMirror = _0x18a3b0.UpdateMirrorLink;
-      } else {
-        document.getElementById("update-check-overlay").style.display = "none";
-        document.getElementById("main-container").style.display = "block";
-      }
-    })
-    ["catch"]((_0x45a83f) => {
-      console.error("Error checking for updates:", _0x45a83f);
-      document.getElementById("update-check-overlay").style.display = "none";
-      document.getElementById("main-container").style.display = "none";
-    });
+  const _0x4b9d7b = document.getElementById("main-container");
+  const _0x52227d = document.getElementById("update-required-container");
+  const _0x1a2cd2 = document.getElementById("update-check-overlay");
+  if (_0x4b9d7b) {
+    _0x4b9d7b.style.display = "none";
+  }
+  if (_0x52227d) {
+    _0x52227d.style.display = "none";
+  }
+  setTimeout(() => {
+    fetch(
+      "https://services.rewindmp.xyz/api/cdn/launcherservice/v1?function=Update"
+    )
+      .then((_0x389ab3) => _0x389ab3.json())
+      .then((_0xf2c1bf) => {
+        const _0x4076a3 = _0xf2c1bf.CurrentBuild;
+        if (_0x4076a3 !== globals.CurrentVer) {
+          if (_0x1a2cd2) {
+            _0x1a2cd2.style.opacity = "0";
+            setTimeout(() => {
+              _0x1a2cd2.style.display = "none";
+              if (_0x52227d) {
+                _0x52227d.style.opacity = "0";
+                _0x52227d.style.display = "flex";
+                setTimeout(() => {
+                  _0x52227d.style.opacity = "1";
+                }, 0x32);
+              }
+            }, 0x12c);
+          }
+          updateMirror = _0xf2c1bf.UpdateMirrorLink;
+        } else if (_0x1a2cd2) {
+          _0x1a2cd2.style.opacity = "0";
+          setTimeout(() => {
+            _0x1a2cd2.style.display = "none";
+            if (_0x4b9d7b) {
+              _0x4b9d7b.style.opacity = "0";
+              _0x4b9d7b.style.display = "block";
+              setTimeout(() => {
+                _0x4b9d7b.style.opacity = "1";
+              }, 0x32);
+            }
+          }, 0x12c);
+        }
+      })
+      ["catch"]((_0x44308e) => {
+        console.error("Error checking for updates:", _0x44308e);
+        if (_0x1a2cd2) {
+          _0x1a2cd2.style.opacity = "0";
+          setTimeout(() => {
+            _0x1a2cd2.style.display = "none";
+            if (_0x4b9d7b) {
+              _0x4b9d7b.style.opacity = "0";
+              _0x4b9d7b.style.display = "block";
+              setTimeout(() => {
+                _0x4b9d7b.style.opacity = "1";
+              }, 0x32);
+            }
+          }, 0x12c);
+        }
+      });
+  }, 0x320);
 }
-window.onload = function () {
-  checkForUpdates();
-};
 document
   .getElementById("install_update")
   .addEventListener("click", async () => {
@@ -65,7 +111,7 @@ document
       document.getElementById("state").innerText =
         "Installing Update, Please Wait..";
       ipcRenderer.send("update", updateMirror);
-    } catch (_0x5e2d66) {
+    } catch (_0x27954a) {
       document.getElementById("state").innerText = "Failed to install!";
     }
   });
@@ -76,88 +122,88 @@ document.getElementById("close").addEventListener("click", () => {
   ipcRenderer.send("close");
 });
 const startListener = () => {
-  const _0x5591f0 = http.createServer((_0x1ca4b9, _0x18bc47) => {
-    console.log("Request URL: " + _0x1ca4b9.url);
-    if (_0x1ca4b9.url.startsWith("/received")) {
-      const _0x4ec271 = new URL(
-        _0x1ca4b9.url,
-        "http://" + _0x1ca4b9.headers.host
+  const _0x2e56e1 = http.createServer((_0x31cd96, _0x424d0e) => {
+    console.log("Request URL: " + _0x31cd96.url);
+    if (_0x31cd96.url.startsWith("/received")) {
+      const _0x6d8aab = new URL(
+        _0x31cd96.url,
+        "http://" + _0x31cd96.headers.host
       );
-      const _0x14984f = _0x4ec271.searchParams.get("code");
-      if (!_0x14984f) {
-        _0x18bc47.writeHead(0x190, {
+      const _0x441f0d = _0x6d8aab.searchParams.get("code");
+      if (!_0x441f0d) {
+        _0x424d0e.writeHead(0x190, {
           "Content-Type": "text/plain",
         });
-        _0x18bc47.end("No code provided!");
+        _0x424d0e.end("No code provided!");
       } else {
-        const _0x5654d2 = path.join(
+        const _0x869943 = path.join(
           __dirname,
           "../authentication/finished.html"
         );
-        fs.readFile(_0x5654d2, "utf8", (_0xd956a8, _0x242935) => {
-          if (_0xd956a8) {
-            console.error("Error reading HTML file:", _0xd956a8.message);
-            _0x18bc47.writeHead(0x1f4, {
+        fs.readFile(_0x869943, "utf8", (_0x485e2a, _0x556b27) => {
+          if (_0x485e2a) {
+            console.error("Error reading HTML file:", _0x485e2a.message);
+            _0x424d0e.writeHead(0x1f4, {
               "Content-Type": "text/plain",
             });
-            _0x18bc47.end(
+            _0x424d0e.end(
               "Internal Server Error: Could not load the HTML file"
             );
             return;
           }
-          _0x18bc47.writeHead(0xc8, {
+          _0x424d0e.writeHead(0xc8, {
             "Content-Type": "text/html",
           });
-          _0x18bc47.end(_0x242935);
+          _0x424d0e.end(_0x556b27);
         });
-        handleDiscordCallback(_0x14984f);
+        handleDiscordCallback(_0x441f0d);
       }
     } else {
-      _0x18bc47.writeHead(0x194, {
+      _0x424d0e.writeHead(0x194, {
         "Content-Type": "text/plain",
       });
-      _0x18bc47.end("Not Found");
+      _0x424d0e.end("Not Found");
     }
   });
-  _0x5591f0.listen(0x1a85, () => {
+  _0x2e56e1.listen(0x1a85, () => {
     console.log("Listening on port 6789");
   });
 };
 startListener();
 const { shell } = require("electron");
 let authWindow = null;
-document.getElementById("authBtn").addEventListener("click", (_0xa8ed81) => {
-  _0xa8ed81.preventDefault();
-  const _0x270808 = document.getElementById("authBtn");
-  _0x270808.innerText = "Starting Auth Window...";
+document.getElementById("authBtn").addEventListener("click", (_0x36acb6) => {
+  _0x36acb6.preventDefault();
+  const _0x1109a4 = document.getElementById("authBtn");
+  _0x1109a4.innerText = "Starting Auth Window...";
   shell.openExternal(
     "https://discord.com/oauth2/authorize?client_id=1264925854908285069&response_type=code&redirect_uri=http%3A%2F%2F127.0.0.1%3A6789%2Freceived&scope=guilds+identify"
   );
-  _0x270808.innerText = "Waiting for response...";
-  const _0x40ffbe = setInterval(() => {
+  _0x1109a4.innerText = "Waiting for response...";
+  const _0x17456b = setInterval(() => {
     if (authWindow && authWindow.closed) {
       authWindow = null;
-      _0x270808.innerText = "Authenticate with Discord";
-      clearInterval(_0x40ffbe);
+      _0x1109a4.innerText = "Authenticate with Discord";
+      clearInterval(_0x17456b);
       console.log("Authentication window was closed by the user.");
     }
   }, 0x3e8);
-  window.addEventListener("message", async (_0xd9b471) => {
-    if (_0xd9b471.origin !== "http://127.0.0.1:6789") {
+  window.addEventListener("message", async (_0x5962dd) => {
+    if (_0x5962dd.origin !== "http://127.0.0.1:6789") {
       return;
     }
-    const { code: _0x46e4c5 } = _0xd9b471.data;
-    if (_0x46e4c5) {
-      clearInterval(_0x40ffbe);
-      _0x270808.innerText = "Processing response...";
-      await handleDiscordCallback(_0x46e4c5);
+    const { code: _0x51b316 } = _0x5962dd.data;
+    if (_0x51b316) {
+      clearInterval(_0x17456b);
+      _0x1109a4.innerText = "Processing response...";
+      await handleDiscordCallback(_0x51b316);
     }
   });
 });
 const initializeLauncherData = () => {
-  fs.access(launcherDataPath, fs.constants.F_OK, (_0x25ebe1) => {
-    if (_0x25ebe1) {
-      const _0x19c458 = {
+  fs.access(launcherDataPath, fs.constants.F_OK, (_0x36989e) => {
+    if (_0x36989e) {
+      const _0x5e101d = {
         launchertoken: "",
       };
       fs.mkdir(
@@ -165,17 +211,17 @@ const initializeLauncherData = () => {
         {
           recursive: true,
         },
-        (_0x3bb22c) => {
-          if (_0x3bb22c) {
-            console.error("Error creating directory:", _0x3bb22c);
+        (_0x3671db) => {
+          if (_0x3671db) {
+            console.error("Error creating directory:", _0x3671db);
             return;
           }
           fs.writeFile(
             launcherDataPath,
-            JSON.stringify(_0x19c458),
-            (_0x38c366) => {
-              if (_0x38c366) {
-                console.error("Error writing file:", _0x38c366);
+            JSON.stringify(_0x5e101d),
+            (_0x21be81) => {
+              if (_0x21be81) {
+                console.error("Error writing file:", _0x21be81);
               } else {
                 console.log("launcherdata.json created with default values.");
               }
@@ -184,26 +230,26 @@ const initializeLauncherData = () => {
         }
       );
     } else {
-      fs.readFile(launcherDataPath, "utf8", (_0x48cceb, _0x4026c8) => {
-        if (_0x48cceb) {
-          console.error("Error reading launcherdata.json:", _0x48cceb);
+      fs.readFile(launcherDataPath, "utf8", (_0x46d88a, _0xe56d94) => {
+        if (_0x46d88a) {
+          console.error("Error reading launcherdata.json:", _0x46d88a);
           return;
         }
         if (
-          !_0x4026c8 ||
-          _0x4026c8 == undefined ||
-          _0x4026c8 == null ||
-          _0x4026c8 == ""
+          !_0xe56d94 ||
+          _0xe56d94 == undefined ||
+          _0xe56d94 == null ||
+          _0xe56d94 == ""
         ) {
-          const _0x38d158 = {
+          const _0x3efb53 = {
             launchertoken: "",
           };
           fs.writeFile(
             launcherDataPath,
-            JSON.stringify(_0x38d158),
-            (_0x292830) => {
-              if (_0x292830) {
-                console.error("Error updating launcherdata.json:", _0x292830);
+            JSON.stringify(_0x3efb53),
+            (_0x44edd6) => {
+              if (_0x44edd6) {
+                console.error("Error updating launcherdata.json:", _0x44edd6);
               } else {
                 console.log("Launcher token updated successfully.");
               }
@@ -212,9 +258,9 @@ const initializeLauncherData = () => {
           setLauncherToken("");
           return;
         }
-        const _0x3e953d = JSON.parse(_0x4026c8);
-        LauncherToken = _0x3e953d.launchertoken;
-        console.log("Launcher Token:", _0x3e953d.launchertoken);
+        const _0x60d818 = JSON.parse(_0xe56d94);
+        LauncherToken = _0x60d818.launchertoken;
+        console.log("Launcher Token:", _0x60d818.launchertoken);
         if (!globals.ForceRequireManualLogin) {
           AttempTokenSignin();
         }
@@ -222,170 +268,159 @@ const initializeLauncherData = () => {
     }
   });
 };
-const setLauncherToken = (_0x49a931) => {
-  fs.readFile(launcherDataPath, "utf8", (_0x3dc529, _0x494a46) => {
-    if (_0x3dc529) {
-      console.error("Error reading launcherdata.json:", _0x3dc529);
+const setLauncherToken = (_0x44b10d) => {
+  fs.readFile(launcherDataPath, "utf8", (_0x4a7bfb, _0x545b91) => {
+    if (_0x4a7bfb) {
+      console.error("Error reading launcherdata.json:", _0x4a7bfb);
       return;
     }
+    let _0x30cbf1 = {};
     if (
-      !_0x494a46 ||
-      _0x494a46 == undefined ||
-      _0x494a46 == null ||
-      _0x494a46 == ""
+      _0x545b91 &&
+      _0x545b91 !== "undefined" &&
+      _0x545b91 !== "null" &&
+      _0x545b91 !== ""
     ) {
-      _0x1417e2 = {};
-      _0x1417e2.launchertoken = _0x49a931;
-      LauncherToken = _0x49a931;
-      fs.writeFile(launcherDataPath, JSON.stringify(_0x1417e2), (_0x264957) => {
-        if (_0x264957) {
-          console.error("Error updating launcherdata.json:", _0x264957);
-        } else {
-          console.log("Launcher token updated successfully.");
-        }
-      });
-      return;
+      try {
+        _0x30cbf1 = JSON.parse(_0x545b91);
+      } catch (_0x3cc747) {
+        console.error("Error parsing launcherdata.json:", _0x3cc747);
+      }
     }
-    const _0x1417e2 = JSON.parse(_0x494a46);
-    _0x1417e2.launchertoken = _0x49a931;
-    LauncherToken = _0x49a931;
-    if (_0x49a931 == null || _0x49a931 == "") {
-      _0x1417e2 = {};
+    if (_0x44b10d === null || _0x44b10d === "") {
+      _0x30cbf1 = {
+        launchertoken: "",
+      };
+    } else {
+      _0x30cbf1.launchertoken = _0x44b10d;
     }
-    ipcRenderer.invoke("token_upload", _0x49a931);
-    fs.writeFile(launcherDataPath, JSON.stringify(_0x1417e2), (_0x4605e9) => {
-      if (_0x4605e9) {
-        console.error("Error updating launcherdata.json:", _0x4605e9);
+    LauncherToken = _0x44b10d;
+    ipcRenderer.invoke("token_upload", _0x44b10d);
+    fs.writeFile(launcherDataPath, JSON.stringify(_0x30cbf1), (_0x51d8ce) => {
+      if (_0x51d8ce) {
+        console.error("Error updating launcherdata.json:", _0x51d8ce);
       } else {
         console.log("Launcher token updated successfully.");
       }
     });
   });
 };
-const handleDiscordCallback = async (_0x4c1e53) => {
-  const _0x25267b = new XMLHttpRequest();
-  const _0xe0c11a =
-    "https://services.rewindmp.xyz/oauth/discordcallback/" + _0x4c1e53;
+const handleDiscordCallback = async (_0x3eef18) => {
+  const _0x59de1a = new XMLHttpRequest();
+  const _0xa75679 =
+    "https://services.rewindmp.xyz/oauth/discordcallback/" + _0x3eef18;
+  console.log("Handling Discord callback with code:", _0x3eef18);
   if (authWindow) {
     authWindow.close();
+    console.log("Auth window closed");
   }
-  _0x25267b.open("GET", _0xe0c11a, true);
-  _0x25267b.onload = function () {
-    if (_0x25267b.status >= 0xc8 && _0x25267b.status < 0x12c) {
-      const _0x218220 = _0x25267b.responseText;
-      if (_0x218220.includes("AUTH_ERROR")) {
-        document.getElementById("authBtn").innerText = "Login Failed.";
-        return showMessageBox(_0x218220);
-      }
-      document.getElementById("authBtn").innerText = "Logging in...";
+  document.getElementById("authBtn").innerText = "Authenticating...";
+  _0x59de1a.open("GET", _0xa75679, true);
+  _0x59de1a.onload = async function () {
+    console.log("HTTP Request Loaded", _0x59de1a.status);
+    if (_0x59de1a.status >= 0xc8 && _0x59de1a.status < 0x12c) {
+      const _0x5d3da1 = _0x59de1a.responseText;
+      console.log("Response Content:", _0x5d3da1);
       try {
-        const _0x36fb1c = JSON.parse(_0x218220);
-        if (!_0x36fb1c) {
-          showMessageBox(_0x218220);
-        }
-        if (_0x36fb1c.Banned) {
-          showMessageBox(
-            "You are banned, You will login to the launcher. Launching will be disabled"
-          );
+        if (_0x5d3da1.includes("AUTH_ERROR")) {
+          document.getElementById("authBtn").innerText = "Login Failed";
+          ipcRenderer.send("load-error-page");
+          showMessageBox("Authentication error: " + _0x5d3da1);
           return;
         }
-        const _0x486007 = {
-          type: "login",
-          email: _0x36fb1c.Email || "",
-          username: _0x36fb1c.Username || "",
-          skin: _0x36fb1c.CurrentSkin || "",
-          hashedpassword: _0x36fb1c.Password || "",
-          accountId: _0x36fb1c.AccountId || "",
-          avatarUrl: _0x36fb1c.avatarUrl,
-        };
-        LauncherToken = _0x36fb1c.SignedToken;
-        document.getElementById("authBtn").innerText = "Validating login...";
-        ipcRenderer.send("validateHwid", {
-          userData: _0x486007,
-        });
-        ipcRenderer.once("login", async (_0x42a506, _0x584279) => {
-          setLauncherToken(_0x36fb1c.SignedToken);
-          cont();
-          ipcRenderer.invoke("userdata_upload", _0x486007);
-          document.getElementById("authBtn").innerText =
-            "Authentication Successful!";
-        });
-      } catch (_0x386cf7) {
-        console.error("Error parsing forward response:", _0x386cf7);
-        document.getElementById("authBtn").innerText = "Error occurred.";
-      }
-    } else {
-      console.error("Failed to get forward response:", _0x25267b.responseText);
-      document.getElementById("authBtn").innerText = "Authentication Failed.";
-    }
-  };
-  _0x25267b.onerror = function () {
-    console.error("Request error");
-    document.getElementById("authBtn").innerText = "Authentication Failed.";
-  };
-  _0x25267b.send();
-};
-function AttempTokenSignin() {
-  if (LauncherToken != "") {
-    const _0x3ebf9f = new XMLHttpRequest();
-    const _0x227fb1 =
-      "https://services.rewindmp.xyz/oauth/tokencallback/" + LauncherToken;
-    _0x3ebf9f.open("GET", _0x227fb1, true);
-    _0x3ebf9f.onload = function () {
-      if (_0x3ebf9f.status >= 0xc8 && _0x3ebf9f.status < 0x12c) {
-        const _0x44011e = _0x3ebf9f.responseText;
-        if (_0x44011e == "EXPIRED_TOKEN") {
-          setLauncherToken("");
-          LauncherToken = "";
+        const _0x1c755f = JSON.parse(_0x5d3da1);
+        if (!_0x1c755f) {
+          document.getElementById("authBtn").innerText = "Login Failed";
+          ipcRenderer.send("load-error-page");
+          showMessageBox("Invalid response: No user data");
           return;
         }
-        document.getElementById("authBtn").innerText = "Logging in...";
+        if (_0x1c755f.Banned) {
+          document.getElementById("authBtn").innerText = "Account Banned";
+          window.location.href = "../pages/banned.html";
+          return;
+        }
         try {
-          const _0x64b45c = JSON.parse(_0x44011e);
-          if (_0x64b45c.Banned) {
-            showMessageBox(
-              "You are banned, You will login to the launcher. Launching will be disabled"
-            );
+          const _0x489487 = await fetch(
+            "https://services.rewindmp.xyz/api/v1/ban/" + _0x1c755f.Username
+          );
+          const _0x3cf6b9 = await _0x489487.text();
+          if (_0x3cf6b9 === "true") {
+            document.getElementById("authBtn").innerText = "Account Banned";
+            setLauncherToken("");
+            window.location.href = "../pages/banned.html";
             return;
           }
-          if (_0x64b45c.Email) {
-            Email = _0x64b45c.Email;
-          }
-          if (_0x64b45c.Password) {
-            Password = _0x64b45c.Password;
-          }
-          if (_0x64b45c.Username) {
-            Username = _0x64b45c.Username;
-          }
-          const _0x19656b = {
-            type: "login",
-            email: Email,
-            username: Username,
-            skin: _0x64b45c.CurrentSkin,
-            hashedpassword: Password,
-            avatarUrl: _0x64b45c.avatarUrl,
-          };
-          LauncherToken = _0x64b45c.SignedToken;
-          setLauncherToken(_0x64b45c.SignedToken);
-          cont();
-          ipcRenderer.invoke("userdata_upload", _0x19656b);
-        } catch (_0x43fa76) {
-          console.error("Error parsing forward response:", _0x43fa76);
+        } catch (_0x2c1ed2) {
+          console.error("Error checking ban status:", _0x2c1ed2);
+          showMessageBox("Error checking ban status: " + _0x2c1ed2.message);
         }
-      } else {
-        console.error(
-          "Failed to get forward response:",
-          _0x3ebf9f.responseText
-        );
+        const _0x5228df = {
+          type: "login",
+          email: _0x1c755f.Email || "",
+          username: _0x1c755f.Username || "",
+          skin: _0x1c755f.CurrentSkin || "",
+          hashedpassword: _0x1c755f.Password || "",
+          accountId: _0x1c755f.AccountId || "",
+          avatarUrl: _0x1c755f.avatarUrl || "",
+        };
+        LauncherToken = _0x1c755f.SignedToken;
+        setLauncherToken(_0x1c755f.SignedToken);
+        document.getElementById("authBtn").innerText = "Validating Login...";
+        ipcRenderer
+          .invoke("userdata_upload", _0x5228df)
+          .then(() => {
+            ipcRenderer.send("validateHwid", {
+              userData: _0x5228df,
+            });
+            ipcRenderer.once("hwid-validated", (_0x385461, _0x595a77) => {
+              if (_0x595a77) {
+                document.getElementById("authBtn").innerText =
+                  "Login Successful";
+                cont();
+              } else {
+                document.getElementById("authBtn").innerText = "Login Failed";
+                ipcRenderer.send("load-error-page");
+                setLauncherToken("");
+              }
+            });
+          })
+          ["catch"]((_0xa94712) => {
+            console.error("Failed to upload user data:", _0xa94712);
+            showMessageBox("Failed to upload user data: " + _0xa94712.message);
+            document.getElementById("authBtn").innerText = "Login Failed";
+            ipcRenderer.send("load-error-page");
+            setLauncherToken("");
+          });
+      } catch (_0x540dd3) {
+        console.error("Error parsing response:", _0x540dd3);
+        showMessageBox("Error parsing response: " + _0x540dd3.message);
+        document.getElementById("authBtn").innerText = "Login Failed";
+        ipcRenderer.send("load-error-page");
       }
-    };
-    _0x3ebf9f.onerror = function () {
-      console.error("Request error");
-    };
-    _0x3ebf9f.send();
-  }
+    } else {
+      console.error("Failed to get response:", _0x59de1a.responseText);
+      showMessageBox("HTTP Request Failed: " + _0x59de1a.responseText);
+      document.getElementById("authBtn").innerText = "Login Failed";
+      ipcRenderer.send("load-error-page");
+    }
+  };
+  _0x59de1a.onerror = function () {
+    console.error("Request error");
+    showMessageBox("Request error occurred.");
+    document.getElementById("authBtn").innerText = "Login Failed";
+    ipcRenderer.send("load-error-page");
+  };
+  _0x59de1a.send();
+};
+function showMessageBox(_0x4e5f46) {
+  const { dialog: _0x4d5bd1 } = require("electron").remote;
+  _0x4d5bd1.showMessageBoxSync({
+    type: "error",
+    title: "Error",
+    message: _0x4e5f46,
+  });
 }
 const cont = () => {
   ipcRenderer.send("load-trailer");
 };
-initializeLauncherData();

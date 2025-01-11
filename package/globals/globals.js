@@ -1,10 +1,10 @@
 /* 
  - Deobfuscated with <3
- - Rewind Launcher v2.1.1
+ - Rewind Launcher v3.0.5
 */
 
 const globals = {
-  CurrentVer: "V2.1.1",
+  CurrentVer: "V3.0.5",
   ForcePreviewTrailer: false,
   ForceRequireManualLogin: false,
   profileUrl: "https://fortnite-api.com/images/cosmetics/br/",

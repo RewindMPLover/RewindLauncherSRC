@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Rewind Launcher</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            background: url('../assets/background.png') no-repeat center center fixed;
+            background-color: #0f1923;
+            background-size: cover;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            color: #fff;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+            position: relative;
+        }
+
+        body::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(15, 25, 35, 0.85);
+            z-index: 1;
+        }
+
+        .container {
+            position: relative;
+            z-index: 2;
+            text-align: center;
+            max-width: 800px;
+            width: 90%;
+            animation: fadeIn 0.5s ease-out;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(-20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .warning-icon {
+            width: 64px;
+            height: 64px;
+            background: #ff3333;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 20px;
+            font-size: 40px;
+            font-weight: bold;
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.1); }
+            100% { transform: scale(1); }
+        }
+
+        h1 {
+            font-size: 48px;
+            margin: 20px 0;
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: #fff;
+            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+        }
+
+        .ban-info {
+            margin: 30px 0;
+            font-size: 20px;
+            line-height: 1.6;
+            color: #fff;
+        }
+
+        .ban-reason {
+            font-size: 24px;
+            color: #ff3333;
+            margin: 20px 0;
+            font-weight: 600;
+        }
+
+        .ban-length {
+            margin: 30px 0;
+        }
+
+        .ban-length-title {
+            font-size: 24px;
+            color: #fff;
+            margin-bottom: 10px;
+        }
+
+        .ban-length-value {
+            font-size: 32px;
+            color: #ff3333;
+            font-weight: bold;
+        }
+
+        .warning-text {
+            font-style: italic;
+            color: #aaa;
+            margin: 30px 0;
+            font-size: 18px;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .continue-btn {
+            display: inline-block;
+            padding: 15px 40px;
+            font-size: 20px;
+            color: #fff;
+            background: #0078f2;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            text-transform: uppercase;
+            font-weight: bold;
+            letter-spacing: 1px;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            margin-top: 20px;
+        }
+
+        .continue-btn:hover {
+            background: #0066cc;
+            transform: translateY(-2px);
+        }
+
+        .divider {
+            width: 100%;
+            max-width: 600px;
+            height: 2px;
+            background: rgba(255, 255, 255, 0.1);
+            margin: 30px auto;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="warning-icon">!</div>
+        <h1>This account has been banned.</h1>
+        <div class="ban-info">
+            Due to recent actions on your account, you have been banned for:
+        </div>
+        <div class="ban-reason">
+            skill issue 😭
+        </div>
+        <div class="divider"></div>
+        <div class="ban-length">
+            <div class="ban-length-title">Ban Length:</div>
+            <div class="ban-length-value">Permanent</div>
+        </div>
+        <div class="warning-text">
+            This permanent ban has been issued and will not be lifted.
+        </div>
+    </div>
+
+    <script>
+        setTimeout(() => {
+            if (window.electron) {
+                window.electron.ipcRenderer.send('quit-app');
+            }
+        }, 30000);
+    </script>
+</body>
+</html>

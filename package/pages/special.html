@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins&display=swap" rel="stylesheet">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Rewind Launcher</title>
+    <link rel="stylesheet" href="../styles/home.css">
+    <link rel="stylesheet" href="../styles/leaderboard.css">
+    <link rel="stylesheet" href="../styles/news.css">
+    <link rel="stylesheet" href="../styles/featured_home.css">
+    <link rel="stylesheet" href="../styles/special.css">
+</head>
+
+<body>
+    <div></div>
+    <audio src="../assets/unreal_chill.mp3" loop autoplay></audio> 
+    <div class="container" id="main-container">
+        <div class="title-bar">
+            <div class="drag-region"><span id="app-title" class="app-title">app-title</span></div>
+            <div class="title-bar-buttons"><button id="minimize">—</button><button class="close" id="close">X</button></div>
+        </div>
+        <div class="sidebar">
+            <div class="logo"><img src="" alt=""></div>
+            <div class="profile-container">
+                <div class="SpacingProfile"><img src="" alt=""></div>
+                <div class="profile-icon" id="profile-icon">
+                    <img src="https://fortnite-api.com/images/cosmetics/br/cid_a_406_athena_commando_m_rebirthfresh/smallicon.png" id="ProfileImg" class="profile-img">
+                    <button class="invisible-button" id="profile-button"></button>
+                </div>
+                <div class="profile-tooltip" id="profile-tooltip"><span id="username">User123</span><span id="role">Admin</span></div>
+            </div>
+            <ul class="menu">
+                <li class="menu-item active" tabindex="0">
+                    <button>
+                        <img src="../assets/home_icon.png" id="home" alt="Store Icon">
+                        <span>Home</span>
+                    </button>
+                </li>
+                <li class="menu-item" tabindex="0">
+                    <button>
+                        <img src="../assets/shop_icon.png" id="shop" alt="Store Icon">
+                        <span>Shop</span>
+                    </button>
+                </li>
+                <li class="menu-item" tabindex="0">
+                    <button>
+                        <img src="../assets/servers_icon.png" id="servers" alt="Store Icon">
+                        <span>Servers</span>
+                    </button>
+                </li>
+                <li class="menu-item" tabindex="0">
+                    <button>
+                        <img src="../assets/timer.png" id="event" alt="Store Icon">
+                        <span>Special Event</span>
+                    </button>
+                </li>
+            </ul>
+            <div class="quick-launch">
+                <span class="quick-launch-title">QUICK LAUNCH</span>
+                <ul class="quick-launch-list">
+                    <li id="launch-fn" class="quick-launch-item">
+                        <img src="../assets/fortnite.png" alt="Logo">
+                        <div>
+                          <span>Fortnite</span>
+                          <span id="fn-status" class="status-text">Launch</span>
+                        </div>
+                      </li>
+                </ul>
+            </div>            
+        </div>
+
+        <div class="content_Special">
+            Soon...
+        </div>   
+
+        <script src="../scripts/home.js"></script>
+</body>
+</html

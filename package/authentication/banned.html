@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Rewind - Authentication</title>
+    <style>
+        body {
+            margin: 0;
+            font-family: 'Segoe UI', Arial, sans-serif;
+            background: linear-gradient(135deg, #12172b 0%, #1c233a 100%);
+            color: #fff;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            overflow: hidden;
+            -webkit-user-select: none;
+            user-select: none;
+        }
+        .title-bar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 32px;
+            background: rgba(28, 35, 58, 0.95);
+            display: flex;
+            justify-content: flex-end;
+            align-items: center;
+            -webkit-app-region: drag;
+        }
+        .title-bar-controls {
+            display: flex;
+            -webkit-app-region: no-drag;
+        }
+        .title-bar-button {
+            width: 46px;
+            height: 32px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            cursor: pointer;
+            background: transparent;
+            border: none;
+            color: #fff;
+            font-family: "Segoe MDL2 Assets";
+            font-size: 10px;
+        }
+        .title-bar-button:hover {
+            background: rgba(255, 255, 255, 0.1);
+        }
+        .container {
+            text-align: center;
+            padding: 2rem;
+        }
+        .banned-icon {
+            font-size: 64px;
+            color: #ff4444;
+            margin-bottom: 1rem;
+        }
+        .banned-title {
+            font-size: 24px;
+            font-weight: bold;
+            margin-bottom: 1rem;
+            color: #ff4444;
+        }
+        .banned-message {
+            font-size: 16px;
+            color: #ffffff;
+            margin-bottom: 2rem;
+        }
+    </style>
+</head>
+<body>
+    <div class="title-bar">
+        <div class="title-bar-controls">
+            <button class="title-bar-button" onclick="minimizeWindow()">&#xE921;</button>
+            <button class="title-bar-button" onclick="closeWindow()">&#xE8BB;</button>
+        </div>
+    </div>
+    <div class="container">
+        <div class="banned-icon">&#x26D4;</div>
+        <div class="banned-title">Account Banned</div>
+        <div class="banned-message">
+            Your account has been banned from Rewind.<br>
+            If you believe this is a mistake, please contact support.
+        </div>
+    </div>
+    <script>
+        function minimizeWindow() {
+            window.api.minimize();
+        }
+        
+        function closeWindow() {
+            window.api.close();
+        }
+    </script>
+</body>
+</html>

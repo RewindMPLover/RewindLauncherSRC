@@ -1,47 +1,108 @@
 /* Base Reset */
-body, h1, p, input, button {
+* {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
 }
+
+html, body {
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+}
+
 body {
   font-family: 'Poppins', sans-serif;
-  background-color: #0d121d;
+  background: linear-gradient(45deg, #0d121d, #1a1f2c);
   color: white;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  height: 100vh;
-  user-select: none; /* Prevent text selection */
+  position: relative;
 }
 
-/* Container */
+/* Container and content wrapper */
 .container {
-  width: 100%;
-  max-width: 400px;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   padding: 20px;
-  text-align: center;
 }
 
-/* Header */
-.header {
-  margin-bottom: 30px;
+.content-wrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 30px;
+  margin-top: 140px; /* Increased from 80px to move content further down */
 }
+
+/* Animated background lights */
+body::before, body::after {
+  content: '';
+  position: fixed;
+  width: 120vw;
+  height: 120vh;
+  top: -10vh;
+  left: -10vw;
+  z-index: 0;
+  pointer-events: none;
+  opacity: 0.4;
+}
+
+body::before {
+  background: radial-gradient(circle at 30% 50%, rgba(99, 102, 241, 0.3) 0%, transparent 50%),
+              radial-gradient(circle at 70% 50%, rgba(147, 51, 234, 0.3) 0%, transparent 50%);
+  animation: backgroundLight1 15s infinite alternate ease-in-out;
+}
+
+body::after {
+  background: radial-gradient(circle at 70% 50%, rgba(79, 70, 229, 0.3) 0%, transparent 50%),
+              radial-gradient(circle at 30% 50%, rgba(168, 85, 247, 0.3) 0%, transparent 50%);
+  animation: backgroundLight2 12s infinite alternate-reverse ease-in-out;
+}
+
+@keyframes backgroundLight1 {
+  0% { transform: translate(-5%, -5%) rotate(0deg); }
+  100% { transform: translate(5%, 5%) rotate(5deg); }
+}
+
+@keyframes backgroundLight2 {
+  0% { transform: translate(5%, 5%) rotate(0deg); }
+  100% { transform: translate(-5%, -5%) rotate(-5deg); }
+}
+
+/* Logo */
 .logo {
-  width: 150px;
+  width: 180px;
+  filter: drop-shadow(0 0 10px rgba(99, 102, 241, 0.3));
 }
 
-/* Login Form */
-.login-container h1 {
-  font-size: 24px;
-  margin-bottom: 20px;
+/* Login box */
+.login-box {
+  background: rgba(13, 18, 29, 0.7);
+  backdrop-filter: blur(10px);
+  border-radius: 16px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+  padding: 25px;
+  width: 320px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  animation: fadeIn 0.8s ease-out;
 }
 
 .login-form {
+  width: 100%;
   display: flex;
   flex-direction: column;
+  align-items: center;
   gap: 15px;
-  margin-bottom: 20px;
 }
 
 .login-form input {
@@ -53,20 +114,30 @@ body {
   border-radius: 4px;
 }
 
-.login-form button {
-  background-color: #6366f1;
+/* Button styles */
+.discord-btn {
+  background: linear-gradient(45deg, #6366f1, #818cf8);
   color: white;
   border: none;
-  padding: 10px;
+  padding: 14px 20px;
   font-size: 16px;
-  font-weight: bold;
-  border-radius: 4px;
+  font-weight: 600;
+  border-radius: 8px;
   cursor: pointer;
-  transition: background-color 0.3s ease;
+  transition: all 0.3s ease;
+  position: relative;
+  overflow: hidden;
+  width: 100%;
+  box-shadow: 0 4px 15px rgba(99, 102, 241, 0.3);
 }
 
-.login-form button:hover {
-  background-color: #818cf8;
+.discord-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 25px rgba(99, 102, 241, 0.4);
+}
+
+.discord-btn:active {
+  transform: translateY(0);
 }
 
 /* Divider */
@@ -75,21 +146,17 @@ body {
   margin: 20px 0;
   color: #aaa;
   font-size: 14px;
+  text-align: center;
 }
 
-.divider span {
-  background-color: #121212;
-  padding: 0 10px;
-}
-
-.divider::before, .divider::after {
+.divider::before,
+.divider::after {
   content: '';
-  display: block;
-  height: 1px;
-  background-color: #333;
   position: absolute;
   top: 50%;
-  width: 40%;
+  width: calc(50% - 30px);
+  height: 1px;
+  background-color: rgba(255, 255, 255, 0.1);
 }
 
 .divider::before {
@@ -100,6 +167,13 @@ body {
   right: 0;
 }
 
+.divider span {
+  background: rgba(13, 18, 29, 0.7);
+  padding: 0 10px;
+  position: relative;
+  z-index: 1;
+}
+
 /* Social Buttons */
 .social-buttons {
   display: flex;
@@ -108,18 +182,27 @@ body {
 }
 
 .social-btn {
-  background-color: #333;
+  background: linear-gradient(45deg, #6366f1, #818cf8);
   color: white;
   border: none;
-  padding: 10px;
-  font-size: 14px;
-  border-radius: 4px;
+  padding: 12px 20px;
+  font-size: 16px;
+  font-weight: 600;
+  border-radius: 8px;
   cursor: pointer;
-  transition: background-color 0.3s ease;
+  transition: all 0.3s ease;
+  position: relative;
+  overflow: hidden;
+  box-shadow: 0 4px 15px rgba(99, 102, 241, 0.3);
 }
 
 .social-btn:hover {
-  background-color: #444;
+  transform: translateY(-2px);
+  box-shadow: 0 8px 25px rgba(99, 102, 241, 0.4);
+}
+
+.social-btn:active {
+  transform: translateY(0);
 }
 
 .facebook {
@@ -146,69 +229,85 @@ body {
   background-color: #0d6610;
 }
 
-/* Footer Text */
+/* Footer text */
 .footer-text {
-  font-size: 12px;
-  margin-top: 20px;
   color: #aaa;
+  font-size: 14px;
+  text-align: center;
 }
 
 .footer-text a {
-  color: white;
-  text-decoration: underline;
-  cursor: pointer;
+  color: #6366f1;
+  text-decoration: none;
+  transition: color 0.2s;
 }
 
+.footer-text a:hover {
+  color: #818cf8;
+  text-decoration: underline;
+}
 
+/* Title Bar */
 .title-bar {
   position: fixed;
   top: 0;
   left: 0;
-  width: 100%;
-  height: 30px;
+  right: 0;
+  height: 32px;
   display: flex;
   justify-content: space-between;
   align-items: center;
-  background-color: #0d121d;
+  background: rgba(13, 18, 29, 0.95);
+  backdrop-filter: blur(10px);
   z-index: 1000;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  user-select: none;
 }
 
-/* Draggable Region */
 .drag-region {
   flex-grow: 1;
-  padding-left: 10px;
+  height: 100%;
   display: flex;
   align-items: center;
-  -webkit-app-region: drag; /* Make this region draggable */
-  color: white;
+  padding: 0 12px;
+  -webkit-app-region: drag;
 }
 
 .app-title {
-  font-size: 14px;
-  font-weight: bold;
+  color: #fff;
+  font-size: 13px;
+  font-weight: 500;
+  opacity: 0.9;
 }
 
 .title-bar-buttons {
   display: flex;
-  gap: 10px;
-  margin-right: 10px;
+  height: 100%;
   -webkit-app-region: no-drag;
 }
+
 .title-bar-buttons button {
-  background: none;
+  width: 46px;
+  height: 100%;
   border: none;
-  color: white;
-  width: 30px;
-  height: 30px;
-  text-align: center;
+  background: transparent;
+  color: #fff;
+  font-size: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   cursor: pointer;
-}
-.title-bar-buttons button:hover {
-  background-color: #333;
+  opacity: 0.8;
+  transition: all 0.2s;
 }
 
-.close button:hover {
-  background-color: #b33629;
+.title-bar-buttons button:hover {
+  opacity: 1;
+  background: rgba(255, 255, 255, 0.1);
+}
+
+.title-bar-buttons .close-btn:hover {
+  background: #ef4444;
 }
 
 /* Overlay Style */
@@ -216,65 +315,124 @@ body {
   position: fixed;
   top: 0;
   left: 0;
-  width: 100%;
-  height: 100%;
-  background-color: rgba(0, 0, 0, 0.5);
+  right: 0;
+  bottom: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(13, 18, 29, 0.95);
   display: flex;
-  align-items: center;
   justify-content: center;
-  z-index: 1000; /* Make sure it appears above all other content */
+  align-items: center;
+  z-index: 2000;
+  backdrop-filter: blur(5px);
+  animation: overlayFade 0.3s ease-out;
+}
+
+@keyframes overlayFade {
+  from { opacity: 0; }
+  to { opacity: 1; }
 }
 
 .overlay-content {
-  color: white;
   text-align: center;
+  animation: contentSlide 0.5s ease-out;
+}
+
+@keyframes contentSlide {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
 .loading-bar-wrapper {
-  margin-top: 20px; /* Space between the text and loading bar */
-  width: 80%; /* Adjust width as necessary */
-  max-width: 300px; /* You can set a max-width to control the size */
-  margin-left: auto;
-  margin-right: auto;
+  width: 200px;
+  height: 4px;
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 2px;
+  margin-top: 15px;
+  overflow: hidden;
 }
 
 .loading-bar {
   width: 100%;
-  height: 10px;
-  background-color: rgba(255, 255, 255, 0.2);
-  border-radius: 5px;
-  position: relative;
-}
-
-.loading-bar::before {
-  content: '';
-  position: absolute;
-  left: 0;
-  top: 0;
-  width: 50%; /* Simulating the progress (adjust this percentage dynamically later) */
   height: 100%;
-  background-color: white;
-  border-radius: 5px;
-  animation: loadProgress 2s infinite;
+  background: linear-gradient(90deg, #6366f1, #818cf8);
+  animation: loading 2s infinite ease-in-out;
+  transform-origin: left;
 }
 
-@keyframes loadProgress {
-  0% { width: 0%; }
-  50% { width: 50%; }
-  100% { width: 100%; }
+@keyframes loading {
+  0% {
+    transform: translateX(-100%);
+  }
+  50% {
+    transform: translateX(0);
+  }
+  100% {
+    transform: translateX(100%);
+  }
 }
 
-/* Optional: Spinner if you want a spinner and the loading bar */
-.spinner {
-  border: 4px solid rgba(255, 255, 255, 0.3);
-  border-top: 4px solid white;
-  border-radius: 50%;
-  width: 40px;
-  height: 40px;
-  animation: spin 1s linear infinite;
+/* Update Required Container */
+#update-required-container {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  width: 100vw;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  background: rgba(13, 18, 29, 0.95);
+  z-index: 1500;
+  animation: fadeIn 0.3s ease-out;
 }
 
-@keyframes spin {
-  0% { transform: rotate(0deg); }
-  100% { transform: rotate(360deg); }
+#update-required-container p {
+  color: white;
+  font-size: 18px;
+  margin-bottom: 20px;
+}
+
+.update {
+  background: linear-gradient(45deg, #6366f1, #818cf8);
+  color: white;
+  border: none;
+  padding: 14px 28px;
+  font-size: 16px;
+  font-weight: 600;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  position: relative;
+  overflow: hidden;
+  box-shadow: 0 4px 15px rgba(99, 102, 241, 0.3);
+}
+
+.update:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 25px rgba(99, 102, 241, 0.4);
+}
+
+.update:active {
+  transform: translateY(0);
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }

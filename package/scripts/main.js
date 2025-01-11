@@ -1,8 +1,7 @@
 /* 
  - Deobfuscated with <3
- - Rewind Launcher v2.1.1
+ - Rewind Launcher v3.0.5
 */
-
 
 const {
   app,
@@ -18,6 +17,8 @@ const globals = require("../globals/globals.js");
 const { Launch } = require("../globals/fortnite.js");
 const RewindAPI = require("../globals/rewindApi.js");
 const fetch = require("node-fetch");
+const axios = require("axios");
+const { execSync } = require("child_process");
 const { setTimeout } = require("timers/promises");
 const os = require("os");
 const si = require("systeminformation");
@@ -26,7 +27,7 @@ let userData = null;
 let currentPage = "Home";
 let win;
 function createWindow() {
-  const _0x1934f8 = new BrowserWindow({
+  const _0xb050a6 = new BrowserWindow({
     width: 0x578,
     height: 0x316,
     minWidth: 0x578,
@@ -40,10 +41,10 @@ function createWindow() {
       enableRemoteModule: false,
     },
   });
-  win = _0x1934f8;
+  win = _0xb050a6;
   Menu.setApplicationMenu(null);
-  _0x1934f8.setMenu(null);
-  _0x1934f8.loadFile("./package/pages/index.html");
+  _0xb050a6.setMenu(null);
+  _0xb050a6.loadFile("./package/pages/index.html");
 }
 app.whenReady().then(() => {
   createWindow();
@@ -58,167 +59,336 @@ const launcherDataPath = path.join(
   "rewind-launcher",
   "launcherdata.json"
 );
-const setLauncherToken = (_0x56902f) => {
-  fs.readFile(launcherDataPath, "utf8", (_0x3c2cb4, _0xf4e22f) => {
-    if (_0x3c2cb4) {
-      console.error("Error reading launcherdata.json:", _0x3c2cb4);
+const setLauncherToken = (_0x365b3b) => {
+  fs.readFile(launcherDataPath, "utf8", (_0x2a413b, _0x10dcf9) => {
+    if (_0x2a413b) {
+      console.error("Error reading launcherdata.json:", _0x2a413b);
       return;
     }
     if (
-      !_0xf4e22f ||
-      _0xf4e22f == undefined ||
-      _0xf4e22f == null ||
-      _0xf4e22f == ""
+      !_0x10dcf9 ||
+      _0x10dcf9 == undefined ||
+      _0x10dcf9 == null ||
+      _0x10dcf9 == ""
     ) {
-      _0x2b521d = {};
-      _0x2b521d.newToken;
-      LauncherToken = _0x56902f;
-      fs.writeFile(launcherDataPath, JSON.stringify(_0x2b521d), (_0x576476) => {
-        if (_0x576476) {
-          console.error("Error updating launcherdata.json:", _0x576476);
+      _0x5bed30 = {};
+      _0x5bed30.newToken;
+      LauncherToken = _0x365b3b;
+      fs.writeFile(launcherDataPath, JSON.stringify(_0x5bed30), (_0x229a36) => {
+        if (_0x229a36) {
+          console.error("Error updating launcherdata.json:", _0x229a36);
         } else {
           console.log("Launcher token updated successfully.");
         }
       });
       return;
     }
-    let _0x2b521d = JSON.parse(_0xf4e22f);
-    _0x2b521d.newToken;
-    LauncherToken = _0x56902f;
-    if (_0x56902f == null || _0x56902f == "") {
-      _0x2b521d = {};
+    let _0x5bed30 = JSON.parse(_0x10dcf9);
+    _0x5bed30.newToken;
+    LauncherToken = _0x365b3b;
+    if (_0x365b3b == null || _0x365b3b == "") {
+      _0x5bed30 = {};
     }
-    fs.writeFile(launcherDataPath, JSON.stringify(_0x2b521d), (_0x173eb1) => {
-      if (_0x173eb1) {
-        console.error("Error updating launcherdata.json:", _0x173eb1);
+    fs.writeFile(launcherDataPath, JSON.stringify(_0x5bed30), (_0x3b6f59) => {
+      if (_0x3b6f59) {
+        console.error("Error updating launcherdata.json:", _0x3b6f59);
       } else {
         console.log("Launcher token updated successfully.");
       }
     });
   });
 };
-function showMessageBox(_0x1afce6, _0x161f9a) {
+function showMessageBox(_0x50d822, _0x48d201) {
   dialog
     .showMessageBox(win, {
       type: "info",
       buttons: ["OK"],
       title: "Information",
-      message: _0x1afce6,
+      message: _0x50d822,
     })
-    .then((_0xae4f08) => {
-      console.log("Dialog closed", _0xae4f08);
-      if (_0x161f9a) {
+    .then((_0x4f843d) => {
+      console.log("Dialog closed", _0x4f843d);
+      if (_0x48d201) {
         app.quit();
       }
     })
-    ["catch"]((_0xbeb83) => {
-      console.error("Dialog error", _0xbeb83);
+    ["catch"]((_0x589738) => {
+      console.error("Dialog error", _0x589738);
     });
 }
-ipcMain.on("get-system-info", async (_0x336253) => {});
-ipcMain.on("openpresent", async (_0x18caff, _0x19040d) => {
-  const { codeName: _0x4efd64 } = _0x19040d;
+ipcMain.on("get-system-info", async (_0x141043) => {});
+ipcMain.on("openpresent", async (_0x45cadc, _0x5eb7fa) => {
+  const { codeName: _0xc93e28 } = _0x5eb7fa;
   await setTimeout(0x5dc);
-  const _0x4a415d =
+  const _0x21d576 =
     "https://services.rewindmp.xyz/api/v1/winterfest/claimReqeust/" +
-    _0x4efd64 +
+    _0xc93e28 +
     "/" +
     launcherTOKEN;
-  console.log("Fetching URL:", _0x4a415d);
+  console.log("Fetching URL:", _0x21d576);
   try {
-    const _0x1898f5 = await fetch(_0x4a415d);
-    const _0x1b40da = await _0x1898f5.text();
-    console.log("Response from API:", _0x1b40da);
-    if (_0x1b40da !== "OK") {
-      _0x18caff.reply("present-opened", {
+    const _0x51dcfb = await fetch(_0x21d576);
+    const _0x59f503 = await _0x51dcfb.text();
+    console.log("Response from API:", _0x59f503);
+    if (_0x59f503 !== "OK") {
+      _0x45cadc.reply("present-opened", {
         success: false,
-        message: _0x1b40da,
+        message: _0x59f503,
       });
     } else {
-      _0x18caff.reply("present-opened", {
+      _0x45cadc.reply("present-opened", {
         success: true,
         message: "Present opened successfully",
       });
     }
-  } catch (_0x3bbb71) {
-    console.error("Error occurred:", _0x3bbb71);
-    _0x18caff.reply("present-opened", {
+  } catch (_0x2df44a) {
+    console.error("Error occurred:", _0x2df44a);
+    _0x45cadc.reply("present-opened", {
       success: false,
-      message: _0x3bbb71.message,
+      message: _0x2df44a.message,
     });
   }
 });
-ipcMain.on("validateHwid", async (_0x3fc1c5, _0x5445c6) => {
+async function checkVpn(_0x52c42e) {
   const {
-    publicIp: _0x27417f,
-    publicIpv4: _0x45c14a,
-    publicIpv6: _0x35ad63,
+    publicIp: _0x27d893,
+    publicIpv4: _0x25c6df,
+    publicIpv6: _0x30ff9f,
   } = await import("public-ip");
-  const { userData: _0x1d17d3 } = _0x5445c6;
+  const _0xf37a77 = "https://proxycheck.io/v2/" + _0x52c42e + "?vpn=1&asn=1";
+  const _0x4da101 = "http://ip-api.com/json/" + _0x52c42e;
   try {
-    let _0x452374 = await _0x45c14a();
-    const _0x189cbd = await si.memLayout();
-    const _0x174d72 = await si.diskLayout();
-    const _0x11a0ca = _0x189cbd
-      .map((_0x3fc3d8) => _0x3fc3d8.serialNum)
-      .join(", ");
-    const _0x51d461 = _0x174d72
-      .map((_0x5677cb) => _0x5677cb.serialNum)
-      .join(", ");
-    const _0x1ffde8 = await RewindAPI.bAllowSerials(
-      _0x1d17d3.username,
-      _0x452374,
-      _0x11a0ca,
-      _0x51d461
-    );
-    if (_0x1ffde8 === "PostLogin") {
-      _0x3fc1c5.reply("login");
-    } else {
-      _0x3fc1c5.reply("failed");
+    const [_0x351812, _0x17202c] = await Promise.all([
+      axios.get(_0xf37a77),
+      axios.get(_0x4da101),
+    ]);
+    const _0x5ddf2f = _0x351812.data;
+    const _0x20719b = _0x17202c.data;
+    const _0x4292c8 = _0x5ddf2f?.[_0x52c42e]?.["proxy"] !== "no";
+    const _0x2afbb5 = _0x20719b?.["proxy"] === true;
+    return !!(_0x4292c8 || _0x2afbb5);
+  } catch (_0x4d727c) {
+    return false;
+  }
+}
+ipcMain.on("validateHwid", async (_0xe8c5eb, _0x20bbb8) => {
+  const {
+    publicIp: _0x150fe6,
+    publicIpv4: _0xa80aad,
+    publicIpv6: _0x2df75f,
+  } = await import("public-ip");
+  const { userData: _0x5d42cc } = _0x20bbb8;
+  try {
+    let _0x36ea60 = await _0xa80aad();
+    const _0x3b7ae0 = await checkVpn(_0x36ea60);
+    if (_0x3b7ae0) {
+      _0xe8c5eb.reply("hwid-validated", false);
       setLauncherToken("");
       showMessageBox(
-        "Uh oh! Seems like you are banned from rewind, make a support ticket: " +
-          _0x1ffde8,
+        "VPN Detected. Please disable your VPN and try again.",
         true
       );
+      return;
     }
-  } catch (_0x49bbf8) {
-    console.log(_0x49bbf8);
+    const _0x28eeb9 = await si.memLayout();
+    const _0x2ced4e = await si.diskLayout();
+    const _0x3b39b4 = await si.cpu();
+    const _0x2abbc4 = await si.bios();
+    const _0x5c0b0b = await si.system();
+    let _0x29d1d0 = _0x28eeb9
+      .map((_0x1c9c35) => _0x1c9c35.serialNum)
+      .filter(
+        (_0x3a9b6c) =>
+          _0x3a9b6c &&
+          _0x3a9b6c.trim() &&
+          _0x3a9b6c !== "0000" &&
+          _0x3a9b6c !== "00000000" &&
+          _0x3a9b6c !== "Unknown"
+      );
+    if (!_0x29d1d0.length) {
+      try {
+        const _0x5cb802 = execSync(
+          "wmic memorychip get serialnumber"
+        ).toString();
+        _0x29d1d0 = _0x5cb802
+          .split("\n")
+          .slice(0x1)
+          .map((_0x30701c) => _0x30701c.trim())
+          .filter(
+            (_0x284575) =>
+              _0x284575 &&
+              _0x284575 !== "0000" &&
+              _0x284575 !== "00000000" &&
+              _0x284575 !== "Unknown"
+          );
+      } catch (_0x3950d8) {
+        console.error("Failed to get RAM serials from wmic:", _0x3950d8);
+      }
+    }
+    _0x29d1d0 = _0x29d1d0.length ? _0x29d1d0.join(",") : "NO_RAM_SERIAL";
+    let _0x5418a1 = _0x2ced4e
+      .map((_0x4f5ef4) => _0x4f5ef4.serialNum)
+      .filter(
+        (_0x835ad9) =>
+          _0x835ad9 &&
+          _0x835ad9.trim() &&
+          _0x835ad9 !== "0000" &&
+          _0x835ad9 !== "00000000" &&
+          _0x835ad9 !== "Unknown"
+      );
+    if (!_0x5418a1.length) {
+      try {
+        const _0x51bb4a = execSync(
+          "wmic diskdrive get serialnumber"
+        ).toString();
+        _0x5418a1 = _0x51bb4a
+          .split("\n")
+          .slice(0x1)
+          .map((_0x1b56a4) => _0x1b56a4.trim())
+          .filter(
+            (_0x4f3df6) =>
+              _0x4f3df6 &&
+              _0x4f3df6 !== "0000" &&
+              _0x4f3df6 !== "00000000" &&
+              _0x4f3df6 !== "Unknown"
+          );
+      } catch (_0x471f0d) {
+        console.error("Failed to get Disk serials from wmic:", _0x471f0d);
+      }
+    }
+    _0x5418a1 = _0x5418a1.length ? _0x5418a1.join(",") : "NO_DISK_SERIAL";
+    let _0x20653f = _0x3b39b4.serial || _0x5c0b0b.uuid;
+    if (!_0x20653f || _0x20653f === "Unknown") {
+      try {
+        _0x20653f = execSync("wmic cpu get processorid")
+          .toString()
+          .split("\n")[0x1]
+          .trim();
+      } catch (_0x2e0f3e) {
+        console.error("Failed to get CPU ID from wmic:", _0x2e0f3e);
+      }
+    }
+    if (!_0x20653f || _0x20653f === "Unknown") {
+      try {
+        const _0x3d1812 = execSync("wmic cpu get serialnumber").toString();
+        const _0x3f9200 = _0x3d1812.split("\n")[0x1].trim();
+        if (_0x3f9200 && _0x3f9200 !== "0000" && _0x3f9200 !== "00000000") {
+          _0x20653f = _0x3f9200;
+        }
+      } catch (_0x4db0c1) {
+        console.error("Failed to get CPU serial from wmic:", _0x4db0c1);
+      }
+    }
+    _0x20653f = _0x20653f && _0x20653f !== "Unknown" ? _0x20653f : "NO_CPU_ID";
+    const _0x4733d3 = _0x2abbc4.serial || "UNKNOWN";
+    let _0x205aa5 = "";
+    try {
+      _0x205aa5 = execSync('wmic useraccount where name="%username%" get sid')
+        .toString()
+        .split("\n")[0x1]
+        .trim();
+    } catch (_0x205d9c) {
+      console.error("Failed to get SID:", _0x205d9c);
+    }
+    if (!_0x205aa5) {
+      _0xe8c5eb.reply("hwid-validated", false);
+      showMessageBox(
+        "Could not get a valid System ID. Please contact support.",
+        true
+      );
+      return;
+    }
+    if (
+      _0x29d1d0 === "NO_RAM_SERIAL" &&
+      _0x5418a1 === "NO_DISK_SERIAL" &&
+      _0x20653f === "NO_CPU_ID"
+    ) {
+      _0xe8c5eb.reply("hwid-validated", false);
+      showMessageBox(
+        "Could not get any valid hardware information. Please contact support.",
+        true
+      );
+      return;
+    }
+    const _0x383563 =
+      "https://services.rewindmp.xyz/api/v1/hwid/serials/" +
+      _0x5d42cc.accountId +
+      "/" +
+      _0x36ea60 +
+      "/" +
+      _0x29d1d0 +
+      "/" +
+      _0x5418a1 +
+      "/" +
+      _0x205aa5 +
+      "/" +
+      _0x20653f +
+      "/" +
+      _0x4733d3;
+    const _0x259835 = await fetch(_0x383563);
+    const _0x36c335 = await _0x259835.text();
+    if (_0x36c335 === "PostLogin") {
+      _0xe8c5eb.reply("hwid-validated", true);
+    } else {
+      _0xe8c5eb.reply("hwid-validated", false);
+      setLauncherToken("");
+      if (
+        _0x36c335 === "Account is banned" ||
+        _0x36c335 === "Hardware is associated with a banned account" ||
+        _0x36c335 === "Account banned due to multiple account detection"
+      ) {
+        showMessageBox(
+          "Your account has been banned. Please contact support.",
+          true
+        );
+      } else if (_0x36c335 === "Account not found") {
+        showMessageBox("Account not found. Please try again.", true);
+      } else {
+        showMessageBox(_0x36c335, true);
+      }
+    }
+  } catch (_0x4328b4) {
+    console.error("Error during HWID validation:", _0x4328b4);
+    _0xe8c5eb.reply("hwid-validated", false);
+    showMessageBox(
+      "Error validating hardware information. Please try again.",
+      true
+    );
   }
 });
-ipcMain.on("update", async (_0x454bac, _0x826092) => {
+ipcMain.on("update", async (_0x42a24f, _0x3f099d) => {
   try {
-    const _0x317e08 = path.join(
+    const _0x590b02 = path.join(
       os.homedir(),
       "Downloads",
       "UpdateToLatest.exe"
     );
-    const _0x1f1550 = await fetch(_0x826092);
-    if (!_0x1f1550.ok) {
+    const _0x4674b4 = await fetch(_0x3f099d);
+    if (!_0x4674b4.ok) {
       app.quit();
       return;
     }
-    const _0x27181b = fs.createWriteStream(_0x317e08);
-    _0x1f1550.body.pipe(_0x27181b);
-    await new Promise((_0x1894b5, _0x1e71d2) => {
-      _0x27181b.on("finish", _0x1894b5);
-      _0x27181b.on("error", _0x1e71d2);
+    const _0xc3d2cc = fs.createWriteStream(_0x590b02);
+    _0x4674b4.body.pipe(_0xc3d2cc);
+    await new Promise((_0x188e00, _0x1fb45b) => {
+      _0xc3d2cc.on("finish", _0x188e00);
+      _0xc3d2cc.on("error", _0x1fb45b);
     });
-    const _0x87f833 = {
+    const _0x273f3f = {
       name: "RewindLauncher",
     };
-    sudo.exec(_0x317e08, _0x87f833, (_0x17b11e, _0x2e2254, _0x173ae0) => {
-      if (_0x17b11e) {
-        console.error("Error running the update process:", _0x17b11e);
+    sudo.exec(_0x590b02, _0x273f3f, (_0x19c406, _0xc83606, _0x32c24b) => {
+      if (_0x19c406) {
+        console.error("Error running the update process:", _0x19c406);
         return;
       }
-      console.log("stdout:", _0x2e2254);
-      console.error("stderr:", _0x173ae0);
+      console.log("stdout:", _0xc83606);
+      console.error("stderr:", _0x32c24b);
       app.quit();
     });
-  } catch (_0x1d58dc) {
-    console.error("Error installing update:", _0x1d58dc);
-    throw _0x1d58dc;
+  } catch (_0x36ec31) {
+    console.error("Error installing update:", _0x36ec31);
+    throw _0x36ec31;
   }
 });
 app.on("window-all-closed", () => {
@@ -226,74 +396,85 @@ app.on("window-all-closed", () => {
     app.quit();
   }
 });
-ipcMain.on("minimize", async (_0x43268e) => {
+ipcMain.on("minimize", async (_0x171f00) => {
   console.log("Minimize action received");
-  const _0x1c76d1 = BrowserWindow.getFocusedWindow();
-  if (_0x1c76d1) {
-    _0x1c76d1.minimize();
+  const _0x21b80d = BrowserWindow.getFocusedWindow();
+  if (_0x21b80d) {
+    _0x21b80d.minimize();
   }
 });
-ipcMain.on("maximize", (_0x4d8d04) => {
+ipcMain.on("maximize", (_0x3b6781) => {
   console.log("Maximize action received");
-  const _0x457ca1 = BrowserWindow.getFocusedWindow();
-  if (_0x457ca1) {
-    if (_0x457ca1.isMaximized()) {
-      _0x457ca1.unmaximize();
+  const _0x1b54f0 = BrowserWindow.getFocusedWindow();
+  if (_0x1b54f0) {
+    if (_0x1b54f0.isMaximized()) {
+      _0x1b54f0.unmaximize();
     } else {
-      _0x457ca1.maximize();
+      _0x1b54f0.maximize();
     }
   }
 });
-ipcMain.on("close", (_0x58d99f) => {
+ipcMain.on("close", (_0x12d1c6) => {
   console.log("Close action received");
-  const _0x50ea6e = BrowserWindow.getFocusedWindow();
-  if (_0x50ea6e) {
-    _0x50ea6e.close();
+  const _0x205425 = BrowserWindow.getFocusedWindow();
+  if (_0x205425) {
+    _0x205425.close();
   }
 });
-ipcMain.on("show-message-box", async (_0x258ea4, _0x3ae571) => {
+ipcMain.on("show-message-box", async (_0x16e2c7, _0x491986) => {
   dialog
     .showMessageBox(win, {
       type: "info",
       buttons: ["OK"],
       title: "Information",
-      message: _0x3ae571,
+      message: _0x491986,
     })
-    .then((_0x4eaa5b) => {
-      console.log("Dialog closed", _0x4eaa5b);
+    .then((_0x1afe4e) => {
+      console.log("Dialog closed", _0x1afe4e);
     })
-    ["catch"]((_0x39aef3) => {
-      console.error("Dialog error", _0x39aef3);
+    ["catch"]((_0x60f245) => {
+      console.error("Dialog error", _0x60f245);
     });
 });
-ipcMain.handle("token_upload", async (_0x36fbcd, _0x4a35a5) => {
-  launcherTOKEN = _0x4a35a5;
+ipcMain.handle("token_upload", async (_0x15a5d2, _0x325914) => {
+  launcherTOKEN = _0x325914;
 });
-ipcMain.handle("userdata_upload", async (_0x4dbc47, _0xc2c7a1) => {
-  userData = _0xc2c7a1;
+ipcMain.handle("userdata_upload", async (_0x5bb5c7, _0x252952) => {
+  try {
+    userData = _0x252952;
+    return {
+      success: true,
+    };
+  } catch (_0xf0a376) {
+    console.error("Error uploading user data:", _0xf0a376);
+    return {
+      success: false,
+      error: _0xf0a376.message,
+    };
+  }
 });
 ipcMain.handle("userdata_get", () => {
   return userData ? userData : null;
 });
-ipcMain.on("load-trailer", async (_0x333372) => {
-  const _0x10af51 = path.join(
+ipcMain.on("load-trailer", async (_0x1d6600) => {
+  const _0x1309ce = path.join(
     process.env.APPDATA,
     "rewind-launcher",
     "FileVersions.json"
   );
-  let _0x54d2d3;
-  if (fs.existsSync(_0x10af51)) {
-    const _0x1a330e = fs.readFileSync(_0x10af51, "utf-8");
-    const _0x747601 = JSON.parse(_0x1a330e);
-    _0x54d2d3 = _0x747601.TrailerVer;
+  let _0x5e9abe;
+  if (fs.existsSync(_0x1309ce)) {
+    const _0x1a2d70 = fs.readFileSync(_0x1309ce, "utf-8");
+    const _0x4a9ca5 = JSON.parse(_0x1a2d70);
+    _0x5e9abe = _0x4a9ca5.TrailerVer;
   }
   if (globals.ForcePreviewTrailer) {
     currentPage = "Trailer";
     return win.loadFile("./package/pages/trailer.html");
   }
-  if (_0x54d2d3 !== 0x4) {
+  if (_0x5e9abe !== 0x4) {
     fs.writeFileSync(
-      _0x10af51,
+      _0x1309ce,
       JSON.stringify(
         {
           TrailerVer: 0x4,
@@ -308,92 +489,154 @@ ipcMain.on("load-trailer", async (_0x333372) => {
     win.loadFile("./package/pages/home.html");
   }
 });
-ipcMain.on("Home", async (_0x5ba18a) => {
+ipcMain.on("Home", async (_0x52d403) => {
   if (currentPage != "Home") {
     currentPage = "Home";
     win.loadFile("./package/pages/home.html");
   }
 });
-ipcMain.on("Servers", async (_0x3b4afa) => {
+ipcMain.on("Servers", async (_0x1c31a9) => {
   if (currentPage != "Servers") {
     currentPage = "Servers";
     win.loadFile("./package/pages/servers.html");
   }
 });
-ipcMain.on("Winterfest", async (_0x22ecda) => {
+ipcMain.on("Winterfest", async (_0x506ab0) => {
   if (currentPage != "Winterfest") {
     currentPage = "Winterfest";
     win.loadFile("./package/pages/winterfest.html");
   }
 });
-ipcMain.on("Profile", async (_0x4db2c4) => {
+ipcMain.on("Profile", async (_0x230ed2) => {
   if (currentPage != "Profile") {
     currentPage = "Profile";
     win.loadFile("./package/pages/profile.html");
   }
 });
-ipcMain.on("Shop", async (_0x59b54f) => {
+ipcMain.on("Shop", async (_0x522d9d) => {
   shell.openExternal("https://services.rewindmp.xyz/shop");
 });
-ipcMain.on("Library", async (_0x4b3680) => {
+ipcMain.on("Library", async (_0xaed8d3) => {
   if (currentPage != "Library") {
     currentPage = "Library";
     win.loadFile("./package/pages/library.html");
   }
 });
-function sendStatusUpdateToRenderer(_0x28eeac) {
-  const _0x4c2554 = BrowserWindow.getFocusedWindow();
-  if (_0x4c2554) {
-    _0x4c2554.webContents.send("fn-status-update", _0x28eeac);
+function sendStatusUpdateToRenderer(_0x18de36) {
+  const _0x4a7440 = BrowserWindow.getFocusedWindow();
+  if (_0x4a7440) {
+    _0x4a7440.webContents.send("fn-status-update", _0x18de36);
   }
 }
 const coreServices = {
-  UpdateFN_State: async (_0x1c4fd7) => {
-    sendStatusUpdateToRenderer(_0x1c4fd7);
+  UpdateFN_State: async (_0x59a8d4) => {
+    sendStatusUpdateToRenderer(_0x59a8d4);
   },
   selectFolder: async () => {
-    const _0x10ef33 = await dialog.showOpenDialog({
+    const _0xd18429 = await dialog.showOpenDialog({
       properties: ["openDirectory"],
     });
-    return _0x10ef33.filePaths[0x0];
+    return _0xd18429.filePaths[0x0];
   },
-  MessagePopup: (_0xb32267) => {
+  MessagePopup: (_0x39f183) => {
     dialog
       .showMessageBox(win, {
         type: "info",
         buttons: ["OK"],
         title: "Information",
-        message: _0xb32267,
+        message: _0x39f183,
       })
-      .then((_0x7ec934) => {
-        console.log("Dialog closed", _0x7ec934);
+      .then((_0x35e1f8) => {
+        console.log("Dialog closed", _0x35e1f8);
       })
-      ["catch"]((_0x411c82) => {
-        console.error("Dialog error", _0x411c82);
+      ["catch"]((_0x2f7e96) => {
+        console.error("Dialog error", _0x2f7e96);
       });
   },
-  log: (_0x489bf1) => {
-    console.log(_0x489bf1);
+  log: (_0x454354) => {
+    console.log(_0x454354);
   },
 };
-ipcMain.on("messagePopup", async (_0x50ca7f, _0x5d48f8) => {
+ipcMain.on("messagePopup", async (_0xb8dd45, _0x3d1874) => {
   dialog
     .showMessageBox(win, {
       type: "info",
       buttons: ["OK"],
       title: "Information",
-      message: _0x5d48f8,
+      message: _0x3d1874,
     })
-    .then((_0x1cced9) => {
-      console.log("Dialog closed", _0x1cced9);
+    .then((_0x294136) => {
+      console.log("Dialog closed", _0x294136);
     })
-    ["catch"]((_0x198e33) => {
-      console.error("Dialog error", _0x198e33);
+    ["catch"]((_0x154f01) => {
+      console.error("Dialog error", _0x154f01);
     });
 });
-ipcMain.on("launch-fn", async (_0x2d6c2e) => {
+ipcMain.on("launch-fn", async (_0x3fa292) => {
   Launch(coreServices, userData);
 });
-ipcMain.on("update-fn-path", async (_0x16f690) => {
+ipcMain.on("update-fn-path", async (_0x3aad9d) => {
   RewindAPI.UpdateGamePath(coreServices);
+});
+async function CheckBanStatus(_0x137e2) {
+  try {
+    const _0x205997 = await fetch(
+      "https://services.rewindmp.xyz/api/v1/RewindBanCheck/" + _0x137e2
+    );
+    const _0x49368c = await _0x205997.text();
+    return _0x49368c === "true";
+  } catch (_0x293d04) {
+    console.error("Error checking ban status:", _0x293d04);
+    return false;
+  }
+}
+async function HandleBanCheck() {
+  const _0x5d043 = userData.accountId;
+  if (!_0x5d043) {
+    return;
+  }
+  const _0x56b80e = await CheckBanStatus(_0x5d043);
+  if (_0x56b80e) {
+    win.loadFile("./package/pages/banned.html");
+    KillFortniteProcesses();
+    setTimeout(() => {
+      try {
+        window.close();
+      } catch (_0x3afe29) {
+        console.error("Error closing launcher:", _0x3afe29);
+      }
+    }, 0x1388);
+  }
+}
+function KillFortniteProcesses() {
+  try {
+    const _0xfbb731 = execSync("tasklist");
+    const _0x2367e2 = _0xfbb731.toString().split("\n");
+    _0x2367e2.forEach((_0x28ff30) => {
+      if (_0x28ff30.toLowerCase().includes("fortnite")) {
+        const _0x44ccfd = _0x28ff30.split(/\s+/);
+        const _0x5a9535 = _0x44ccfd[0x1];
+        try {
+          execSync("taskkill /F /PID " + _0x5a9535);
+          console.log("Killed Fortnite process (PID " + _0x5a9535 + ")");
+        } catch (_0x3494a4) {
+          console.error(
+            "Error killing Fortnite process (PID " +
+              _0x5a9535 +
+              "): " +
+              _0x3494a4.message
+          );
+        }
+      }
+    });
+  } catch (_0x2522fe) {
+    console.error("Error listing processes: " + _0x2522fe.message);
+  }
+}
+function StartBanCheck() {
+  HandleBanCheck();
+  setInterval(HandleBanCheck, 0x1388);
+}
+app.on("ready", () => {
+  StartBanCheck();
 });

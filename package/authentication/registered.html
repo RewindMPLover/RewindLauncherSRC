@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Rewind - Authentication Error</title>
+    <style>
+        body {
+            margin: 0;
+            font-family: 'Segoe UI', Arial, sans-serif;
+            background: linear-gradient(135deg, #12172b 0%, #1c233a 100%);
+            color: #fff;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            overflow: hidden;
+            -webkit-user-select: none;
+            user-select: none;
+        }
+        .title-bar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 32px;
+            background: rgba(28, 35, 58, 0.95);
+            display: flex;
+            justify-content: flex-end;
+            align-items: center;
+            -webkit-app-region: drag;
+        }
+        .title-bar-controls {
+            display: flex;
+            -webkit-app-region: no-drag;
+        }
+        .title-bar-button {
+            width: 46px;
+            height: 32px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            cursor: pointer;
+            background: transparent;
+            border: none;
+            color: #fff;
+            font-family: "Segoe MDL2 Assets";
+            font-size: 10px;
+        }
+        .title-bar-button:hover {
+            background: rgba(255, 255, 255, 0.1);
+        }
+        .title-bar-button.close:hover {
+            background: #e81123;
+        }
+        .container {
+            text-align: center;
+            background: rgba(28, 35, 58, 0.95);
+            padding: 40px 60px;
+            border-radius: 16px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            transform: translateY(0);
+            animation: shake 0.5s ease-in-out;
+            margin-top: 32px;
+        }
+        .icon {
+            font-size: 64px;
+            margin-bottom: 20px;
+            animation: scale 0.5s ease-out;
+        }
+        @keyframes scale {
+            0% { transform: scale(0); }
+            90% { transform: scale(1.1); }
+            100% { transform: scale(1); }
+        }
+        .title {
+            font-size: 28px;
+            font-weight: 600;
+            margin: 0;
+            background: linear-gradient(45deg, #ff3b30, #dc1c13);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 10px;
+        }
+        .message {
+            font-size: 18px;
+            color: #a8b2d1;
+            margin: 15px 0;
+            opacity: 0;
+            animation: fadeIn 0.5s ease-out forwards;
+            animation-delay: 0.2s;
+        }
+        .action {
+            font-size: 16px;
+            color: #ff3b30;
+            margin: 15px 0;
+            font-weight: 500;
+            opacity: 0;
+            animation: fadeIn 0.5s ease-out forwards;
+            animation-delay: 0.4s;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            10%, 30%, 50%, 70%, 90% { transform: translateX(-5px); }
+            20%, 40%, 60%, 80% { transform: translateX(5px); }
+        }
+        .content {
+            text-align: center;
+            padding: 20px;
+        }
+        .success-message {
+            font-size: 24px;
+            margin-bottom: 20px;
+        }
+        .details {
+            font-size: 16px;
+            color: #a0a0a0;
+        }
+    </style>
+</head>
+<body>
+    <div class="title-bar">
+        <div class="title-bar-controls">
+            <button class="title-bar-button minimize" onclick="minimizeWindow()">&#xE921;</button>
+            <button class="title-bar-button close" onclick="closeWindow()">&#xE8BB;</button>
+        </div>
+    </div>
+    <div class="container">
+        <div class="icon">❌</div>
+        <h1 class="title">Already Registered</h1>
+        <p class="message">You are already registered with another account.</p>
+        <p class="action">If you think this is a mistake, please contact support.</p>
+    </div>
+    <script>
+        const { ipcRenderer } = require('electron');
+        
+        function minimizeWindow() {
+            ipcRenderer.send('minimize-window');
+        }
+        
+        function closeWindow() {
+            ipcRenderer.send('close-window');
+        }
+    </script>
+</body>
+</html>

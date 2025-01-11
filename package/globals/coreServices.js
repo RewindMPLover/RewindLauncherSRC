@@ -1,6 +1,6 @@
 /* 
  - Deobfuscated with <3
- - Rewind Launcher v2.1.1
+ - Rewind Launcher v3.0.5
 */
 
 const {
@@ -11,8 +11,8 @@ const {
   dialog,
   ipcRenderer,
 } = require("electron");
-function MessagePopup(_0x57aea5) {
-  ipcRenderer.send("messagePopup", _0x57aea5);
+function MessagePopup(_0x64fae5) {
+  ipcRenderer.send("messagePopup", _0x64fae5);
 }
 module.exports = {
   MessagePopup: MessagePopup,

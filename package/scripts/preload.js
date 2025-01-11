@@ -1,16 +1,16 @@
 /* 
  - Deobfuscated with <3
- - Rewind Launcher v2.1.1
+ - Rewind Launcher v3.0.5
 */
 
 window.addEventListener("DOMContentLoaded", () => {
-  const _0xae3ff1 = (_0x1ce879, _0x15e423) => {
-    const _0x3b6d50 = document.getElementById(_0x1ce879);
-    if (_0x3b6d50) {
-      _0x3b6d50.innerText = _0x15e423;
+  const _0x1d85ab = (_0x574465, _0x38cdae) => {
+    const _0xc4fc69 = document.getElementById(_0x574465);
+    if (_0xc4fc69) {
+      _0xc4fc69.innerText = _0x38cdae;
     }
   };
-  for (const _0xf4b2c4 of ["chrome", "node", "electron"]) {
-    _0xae3ff1(_0xf4b2c4 + "-version", process.versions[_0xf4b2c4]);
+  for (const _0x40723f of ["chrome", "node", "electron"]) {
+    _0x1d85ab(_0x40723f + "-version", process.versions[_0x40723f]);
   }
 });

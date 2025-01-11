@@ -1,0 +1,10 @@
+.content_Special {
+    flex-grow: 1;
+    padding: 20px;
+    background-color: #000000;
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
